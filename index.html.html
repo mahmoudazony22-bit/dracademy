@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="light"><title>Dr Academy</title></head><body>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+  :root{--ink:#1B2340;--ink-soft:#333B58;--paper:#F7F4EC;--card:#FFFFFF;--gold:#C99A3B;--gold-soft:#F1E3C3;--teal:#2F7A6F;--teal-soft:#DCEDE9;--coral:#C1503E;--coral-soft:#F5DEDA;--slate:#6B7280;--slate-soft:#E9E9EF;--line:#E6E0D2;}
+  *{box-sizing:border-box;}
+  .app-root{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color:var(--ink);min-height:600px;direction:rtl;font-size:14px;line-height:1.6;}
+  .app-root h1,.app-root h2,.app-root h3,.brand,.tab-label{font-family:'Tajawal','IBM Plex Sans Arabic',sans-serif;}
+  .shell{display:flex;min-height:600px;}
+  .sidebar{width:216px;background:var(--ink);color:#EDE9DC;padding:20px 14px;flex-shrink:0;display:flex;flex-direction:column;}
+  .brand{font-weight:900;font-size:19px;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+  .brand-seal{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:900;font-size:12px;flex-shrink:0;}
+  .role-tag{font-size:11px;color:var(--gold-soft);background:rgba(201,154,59,.18);display:inline-block;padding:2px 10px;border-radius:100px;margin-bottom:20px;width:fit-content;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;margin-bottom:3px;cursor:pointer;color:#C9CADA;font-weight:500;font-size:13px;transition:background .15s;}
+  .nav-item:hover{background:rgba(255,255,255,.06);color:#fff;}
+  .nav-item.active{background:var(--gold);color:var(--ink);font-weight:700;}
+  .nav-spacer{flex:1;}
+  .logout-btn{color:#C9CADA;font-size:12.5px;cursor:pointer;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);margin-top:8px;}
+  .logout-btn:hover{color:#fff;}
+  .main{flex:1;padding:26px 32px;overflow:auto;max-height:800px;}
+  .page-title{font-size:22px;font-weight:900;margin-bottom:2px;}
+  .page-sub{color:var(--slate);font-size:13px;margin-bottom:22px;}
+  .grid{display:grid;gap:14px;}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .stat-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .stat-num{font-size:26px;font-weight:900;color:var(--ink);}
+  .stat-label{font-size:12.5px;color:var(--slate);margin-top:2px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px;}
+  .card-title{font-weight:700;font-size:15px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+  .row{display:flex;align-items:center;gap:10px;}
+  .btn{background:var(--ink);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block;}
+  .btn:hover{background:var(--ink-soft);}
+  .btn-gold{background:var(--gold);color:var(--ink);}
+  .btn-gold:hover{background:#B98A2E;}
+  .btn-outline{background:transparent;color:var(--ink);border:1px solid var(--line);}
+  .btn-outline:hover{background:#F0EDE3;}
+  .btn-danger{background:transparent;color:var(--coral);border:1px solid var(--coral-soft);}
+  .btn-danger:hover{background:var(--coral-soft);}
+  .btn-sm{padding:5px 11px;font-size:12px;border-radius:6px;}
+  .btn-live{background:var(--coral);color:#fff;}
+  .btn-live:hover{background:#A63F30;}
+  input,select,textarea{font-family:inherit;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13px;background:#fff;color:var(--ink);width:100%;}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  label{font-size:12.5px;color:var(--slate);font-weight:600;display:block;margin-bottom:4px;}
+  .field{margin-bottom:12px;}
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:right;font-size:12px;color:var(--slate);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--line);}
+  td{padding:9px 10px;font-size:13px;border-bottom:1px solid var(--line);}
+  .pill{padding:3px 10px;border-radius:100px;font-size:11.5px;font-weight:700;display:inline-block;}
+  .pill-teal{background:var(--teal-soft);color:var(--teal);}
+  .pill-coral{background:var(--coral-soft);color:var(--coral);}
+  .pill-gold{background:var(--gold-soft);color:#8a6a1f;}
+  .pill-slate{background:var(--slate-soft);color:#4B5563;}
+  .empty{text-align:center;color:var(--slate);padding:30px 10px;font-size:13px;border:1px dashed var(--line);border-radius:10px;}
+  .seal{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--gold);font-size:14px;flex-shrink:0;}
+  .tab-row{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;flex-wrap:wrap;}
+  .tab-label{padding:9px 13px;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--slate);border-bottom:2px solid transparent;white-space:nowrap;}
+  .tab-label.active{color:var(--ink);border-bottom-color:var(--gold);}
+  .course-strip{width:5px;border-radius:4px;background:var(--gold);align-self:stretch;}
+  .login-wrap{min-height:600px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--ink) 0%,#262F52 100%);padding:30px;}
+  .login-card{width:400px;background:var(--paper);border-radius:16px;padding:30px 28px;box-shadow:0 20px 50px rgba(0,0,0,.35);}
+  .login-seal{width:52px;height:52px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--ink);font-size:16px;margin-bottom:14px;}
+  .role-pick{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px;}
+  .role-opt{border:1.5px solid var(--line);border-radius:10px;padding:9px 4px;text-align:center;cursor:pointer;font-size:11.5px;font-weight:700;color:var(--slate);background:#fff;}
+  .role-opt.active{border-color:var(--gold);background:var(--gold-soft);color:#8a6a1f;}
+  .muted{color:var(--slate);font-size:12.5px;}
+  .qbox{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .link-btn{color:var(--teal);font-size:12.5px;font-weight:700;cursor:pointer;}
+  .banner{border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;}
+  .banner-live{background:var(--coral-soft);color:var(--coral);border:1px solid var(--coral);}
+  .banner-reminder{background:var(--gold-soft);color:#8a6a1f;border:1px solid var(--gold);}
+  .video-protect{position:relative;border-radius:10px;overflow:hidden;margin-bottom:10px;background:#000;}
+  .watermark-overlay{position:absolute;inset:0;pointer-events:none;display:flex;flex-wrap:wrap;align-content:space-around;justify-content:space-around;opacity:.4;transform:rotate(-16deg);font-size:12px;font-weight:800;color:#fff;text-shadow:0 0 3px rgba(0,0,0,.9);user-select:none;padding:10px;}
+  .cert-page{background:#fff;border:10px double var(--gold);border-radius:14px;padding:50px 40px;text-align:center;max-width:640px;margin:0 auto;}
+  .cert-seal{width:70px;height:70px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;margin:0 auto 16px;}
+  @media print{.sidebar,.tab-row,.no-print{display:none !important;}.main{padding:0 !important;max-height:none !important;}}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:#D9D2BE;border-radius:8px;}
+</style>
+
+<div id="app" class="app-root"></div>
+
+<script type="module">
+import { initializeApp, getApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, collection, doc, getDoc, writeBatch, onSnapshot, query, where } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+// ====== الصق إعدادات Firebase هنا (Project settings ← Your apps ← Web app) ======
+const firebaseConfig = {
+  apiKey: "AIzaSyBZrm7R1lEgQJN1TrQTf0lDKh_E6iwMuUk",
+  authDomain: "dr-academy-50c37.firebaseapp.com",
+  projectId: "dr-academy-50c37",
+  storageBucket: "dr-academy-50c37.firebasestorage.app",
+  messagingSenderId: "262389856480",
+  appId: "1:262389856480:web:99f6a3940a795cc3273885"
+};
+// ================================================================================
+
+(function(){
+  const KEYS = {
+    students:'platform:students', teachers:'platform:teachers', courses:'platform:courses',
+    enrollments:'platform:enrollments', attendance:'platform:attendance', grades:'platform:grades',
+    exams:'platform:exams', submissions:'platform:submissions', homework:'platform:homework',
+    hwSubs:'platform:hwsubs', settings:'platform:settings', certificates:'platform:certificates',
+    qbank:'platform:qbank', events:'platform:events'
+  };
+  const uid = () => Math.random().toString(36).slice(2,9);
+  function normCode(c){ c=(c||'').trim().toUpperCase().replace(/\s+/g,''); if(/^\d{4,8}$/.test(c)) c='DR#'+c; return c; }
+  function uiModal(inner){
+    let o = document.getElementById('uiModal'); if(o) o.remove();
+    o = document.createElement('div'); o.id = 'uiModal';
+    o.style.cssText = 'position:fixed;inset:0;background:rgba(27,35,64,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;direction:rtl;';
+    o.innerHTML = '<div style="background:#fff;border-radius:14px;padding:22px;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.35);max-height:85vh;overflow:auto;">' + inner + '</div>';
+    document.body.appendChild(o); return o;
+  }
+  function askConfirm(msg){
+    return new Promise(res=>{
+      const o = uiModal('<div style="font-weight:700;margin-bottom:16px;line-height:1.7;">'+esc(msg)+'</div><div style="display:flex;gap:8px;"><button class="btn btn-danger" id="uiYes" style="flex:1;">تأكيد</button><button class="btn btn-outline" id="uiNo" style="flex:1;">إلغاء</button></div>');
+      o.querySelector('#uiYes').onclick = ()=>{ o.remove(); res(true); };
+      o.querySelector('#uiNo').onclick = ()=>{ o.remove(); res(false); };
+    });
+  }
+  function showText(title, text){
+    const o = uiModal('<div style="font-weight:700;margin-bottom:10px;">'+esc(title)+'</div><textarea readonly rows="6" style="margin-bottom:12px;">'+esc(text)+'</textarea><button class="btn btn-gold" id="uiOk" style="width:100%;">تمام</button>');
+    const ta = o.querySelector('textarea'); ta.focus(); ta.select();
+    o.querySelector('#uiOk').onclick = ()=>o.remove();
+  }
+  function toast(msg){
+    const o = uiModal('<div style="line-height:1.7;margin-bottom:14px;white-space:pre-wrap;">'+esc(msg)+'</div><button class="btn btn-gold" id="uiOk" style="width:100%;">تمام</button>');
+    o.querySelector('#uiOk').onclick = ()=>o.remove();
+  }
+  window.alert = toast;
+  function editModal(title, fields, onSave){
+    const o = uiModal('<div style="font-weight:700;margin-bottom:12px;">'+esc(title)+'</div>' +
+      fields.map(f=>'<div class="field"><label>'+esc(f.label)+'</label><input id="em_'+f.id+'" type="'+(f.type||'text')+'" value="'+esc(f.value==null?'':String(f.value))+'" /></div>').join('') +
+      '<div style="display:flex;gap:8px;"><button class="btn btn-gold" id="emSave" style="flex:1;">حفظ</button><button class="btn btn-outline" id="emCancel" style="flex:1;">إلغاء</button></div>');
+    o.querySelector('#emCancel').onclick = ()=>o.remove();
+    o.querySelector('#emSave').onclick = async ()=>{
+      const vals = {}; fields.forEach(f=>{ vals[f.id] = o.querySelector('#em_'+f.id).value.trim(); });
+      o.remove(); await onSave(vals);
+    };
+  }
+  function fmtDT(v){ return v ? v.replace('T',' ') : ''; }
+  const APP_URL = location.href.split('#')[0];
+  async function hashPass(p){ try{ const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('dracademy:'+p)); return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join(''); }catch(e){ return 'p:'+p; } }
+  const studentCode = (id) => 'ST-' + id.slice(0,5).toUpperCase();
+
+  let DB = { students:[], teachers:[], courses:[], enrollments:[], attendance:[], grades:[], exams:[], submissions:[], homework:[], hwSubs:[], certificates:[], qbank:[], events:[], codes:[], contacts:[] };
+  let SETTINGS = { dailyApiKey:'' };
+  let ME = null, route = 'dash', ctx = {}, loading = true;
+
+  const DATA_COLLS = ['students','teachers','courses','enrollments','attendance','grades','exams','submissions','homework','hwSubs','certificates','qbank','events'];
+  const IDF = { enrollments:o=>o.courseId+'_'+o.studentId, attendance:o=>o.courseId+'_'+o.date, submissions:o=>o.examId+'_'+o.studentId, hwSubs:o=>o.hwId+'_'+o.studentId };
+  const docIdOf = (name,o) => IDF[name] ? IDF[name](o) : o.id;
+  const KEY2COLL = {}; DATA_COLLS.forEach(n=>{ KEY2COLL[KEYS[n]] = n; });
+  let SYNC = {}, fb = {}, unsubs = [], READY = false;
+  const codeToEmail = c => normCode(c).toLowerCase().replace('#','') + '@dracademy.app';
+  function configured(){ return firebaseConfig.apiKey && !/PASTE/i.test(firebaseConfig.apiKey); }
+
+  async function saveShared(key, arr){
+    const name = KEY2COLL[key]; if(!name) return;
+    const prev = SYNC[name] || {}, next = {};
+    arr.forEach(o=>{ next[docIdOf(name,o)] = JSON.stringify(o); });
+    const batch = writeBatch(fb.db); let n = 0;
+    Object.keys(next).forEach(id=>{ if(prev[id] !== next[id]){ batch.set(doc(fb.db,name,id), JSON.parse(next[id])); n++; } });
+    Object.keys(prev).forEach(id=>{ if(!(id in next)){ batch.delete(doc(fb.db,name,id)); n++; } });
+    SYNC[name] = next;
+    if(n){ try{ await batch.commit(); }catch(e){ console.error(e); alert('تعذر الحفظ. ممكن ليس لديك صلاحية لهذا الإجراء أو الاتصال ضعيف.'); } }
+  }
+  async function saveSettingsObj(){}
+
+  function softRender(){
+    const a = document.activeElement;
+    const typing = a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName);
+    if(typing || document.getElementById('uiModal')) return;
+    if(route==='studentExams' && ctx.takeExam) return;
+    render();
+  }
+  function stopListeners(){ unsubs.forEach(f=>{ try{ f(); }catch(e){} }); unsubs = []; }
+  function listen(name, q, onDone){
+    let first = true;
+    const un = onSnapshot(q, snap=>{
+      const arr = [], sync = {};
+      snap.forEach(d=>{ const o = d.data(); arr.push(o); sync[d.id] = JSON.stringify(o); });
+      DB[name] = arr; SYNC[name] = sync;
+      if(first){ first = false; onDone(); } else if(READY) softRender();
+    }, err=>{ console.error(name, err); if(first){ first = false; onDone(); } });
+    unsubs.push(un);
+  }
+  async function enter(u){
+    const r = await getDoc(doc(fb.db,'roles',u.uid));
+    if(!r.exists()){ await signOut(fb.auth); alert('الحساب غير مفعّل. تواصل مع إدارة السنتر.'); return; }
+    const info = r.data(), role = info.role, me = info.userId;
+    stopListeners(); READY = false; loading = true; render();
+    const jobs = [];
+    const C = n => collection(fb.db, n);
+    const add = (name, q) => jobs.push(new Promise(res=>listen(name, q, res)));
+    if(role==='admin' || role==='teacher'){
+      DATA_COLLS.forEach(n=>add(n, C(n)));
+      add('contacts', C('contacts'));
+      if(role==='admin') add('codes', C('codes'));
+    } else {
+      ['courses','exams','homework','events','attendance'].forEach(n=>add(n, C(n)));
+      ['enrollments','grades','submissions','hwSubs','certificates'].forEach(n=>add(n, query(C(n), where('studentId','==',me))));
+      DB.qbank = []; DB.teachers = [];
+      jobs.push(getDoc(doc(fb.db,'students',me)).then(d=>{ DB.students = d.exists() ? [d.data()] : []; }));
+    }
+    await Promise.all(jobs);
+    READY = true;
+    let code = ''; try{ code = localStorage.getItem('dr_code') || ''; }catch(e){}
+    if(role==='admin') ME = { id:'admin', name:'الإدارة', role:'admin' };
+    else {
+      const list = role==='student' ? DB.students : DB.teachers;
+      const user = list.find(x=>x.id===me);
+      if(!user){ await signOut(fb.auth); alert('بيانات الحساب غير موجودة.'); return; }
+      ME = {...user, role, code};
+    }
+    let parent = false; try{ parent = localStorage.getItem('dr_parent') === '1'; }catch(e){}
+    if(parent && role==='student'){ route = 'parentReport'; ctx = {studentId: ME.id}; } else { route = 'dash'; ctx = {}; }
+    loading = false; render();
+  }
+  function boot(){
+    if(!configured()){
+      document.getElementById('app').innerHTML = '<div style="padding:40px;max-width:560px;margin:0 auto;line-height:1.9;"><h2>الإعداد مطلوب</h2><p>افتح الملف وابحث عن <b>firebaseConfig</b> في أول السكربت، والصق إعدادات مشروع Firebase مكان كلمات PASTE.</p></div>';
+      return;
+    }
+    const app = initializeApp(firebaseConfig);
+    fb.app = app; fb.auth = getAuth(app); fb.db = getFirestore(app);
+    onAuthStateChanged(fb.auth, u=>{
+      if(u){ enter(u); }
+      else { stopListeners(); READY = false; ME = null; loading = false; route = 'dash'; ctx = {}; render(); }
+    });
+  }
+  async function signInCode(raw){
+    const c = normCode(raw);
+    if(!c){ alert('اكتب الكود'); return false; }
+    try{
+      await signInWithEmailAndPassword(fb.auth, codeToEmail(c), c);
+      try{ localStorage.setItem('dr_code', c.replace(/^DR#/,'Dr#')); }catch(e){}
+      return true;
+    }catch(e){ alert('الكود غير صحيح. تأكد منه مع إدارة السنتر.'); return false; }
+  }
+
+  function esc(s){ return (s||'').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function go(r, c){ route = r; ctx = c || {}; render(); }
+  window.__go = go;
+
+  // ---------- LOGIN ----------
+  function roleTabs(active){
+    const t=(k,l)=>`<div class="role-opt ${active===k?'active':''}" onclick="__go('login',{pickedRole:'${k}'})">${l}</div>`;
+    return `<div class="role-pick" style="grid-template-columns:repeat(3,1fr);">${t('code','طالب / مدرس')}${t('parent','ولي أمر')}${t('admin','إدارة')}</div>`;
+  }
+  function renderLogin(){
+    const el = document.getElementById('app');
+    const picked = ctx.pickedRole || 'code';
+    let body = '';
+    if(picked==='code'){
+      body = `<p class="muted" style="margin-bottom:16px;">اكتب الكود اللي وصلك من إدارة السنتر</p>
+        <div class="field"><label>كود الدخول</label><input id="loginCode" placeholder="مثال: Dr#482915" onkeydown="if(event.key==='Enter')__doLogin('code')" /></div>
+        <button class="btn btn-gold" style="width:100%;padding:11px;" onclick="__doLogin('code')">دخول</button>`;
+    } else if(picked==='parent'){
+      body = `<p class="muted" style="margin-bottom:16px;">بوابة ولي الأمر — اكتب كود ابنك لمتابعة الحضور والدرجات</p>
+        <div class="field"><label>كود الطالب</label><input id="parentCode" placeholder="مثال: Dr#482915" onkeydown="if(event.key==='Enter')__viewParentReport()" /></div>
+        <button class="btn btn-gold" style="width:100%;padding:11px;" onclick="__viewParentReport()">عرض التقرير</button>`;
+    } else {
+      body = `<p class="muted" style="margin-bottom:16px;">دخول إدارة السنتر</p>
+        <div class="field"><label>البريد الإلكتروني للإدارة</label><input id="loginEmail" type="email" placeholder="admin@example.com" /></div>
+        <div class="field"><label>كلمة مرور الإدارة</label><input id="loginPass" type="password" placeholder="••••" onkeydown="if(event.key==='Enter')__doLogin('admin')" /></div>
+        <button class="btn btn-gold" style="width:100%;padding:11px;" onclick="__doLogin('admin')">دخول</button>`;
+    }
+    el.innerHTML = `<div class="login-wrap"><div class="login-card">
+      <div class="login-seal">DA</div>
+      <h1 style="font-size:20px;font-weight:900;margin-bottom:4px;">Dr Academy</h1>
+      ${roleTabs(picked)}${body}
+    </div></div>`;
+  }
+
+  window.__viewParentReport = async function(){
+    try{ localStorage.setItem('dr_parent','1'); }catch(e){}
+    const ok = await signInCode(document.getElementById('parentCode').value);
+    if(!ok){ try{ localStorage.removeItem('dr_parent'); }catch(e){} }
+  };
+  window.__doLogin = async function(role){
+    try{ localStorage.removeItem('dr_parent'); }catch(e){}
+    if(role==='admin'){
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPass').value;
+      if(!email || !pass){ alert('اكتب البريد وكلمة المرور'); return; }
+      try{ await signInWithEmailAndPassword(fb.auth, email, pass); }
+      catch(e){ alert('بيانات دخول الإدارة غير صحيحة'); }
+      return;
+    }
+    await signInCode(document.getElementById('loginCode').value);
+  };
+  window.__logout = async function(){
+    try{ localStorage.removeItem('dr_parent'); localStorage.removeItem('dr_code'); }catch(e){}
+    ctx = {}; route = 'login';
+    try{ await signOut(fb.auth); }catch(e){}
+  };
+
+  // ---------- HELPERS ----------
+  function buildReportText(studentId){
+    const student = DB.students.find(s=>s.id===studentId);
+    if(!student) return '';
+    const att = DB.attendance.flatMap(a=>a.records.filter(r=>r.studentId===studentId));
+    const present = att.filter(r=>r.status==='present').length;
+    const grades = DB.grades.filter(g=>g.studentId===studentId);
+    const avg = grades.length ? Math.round(grades.reduce((a,g)=>a+(g.score/g.max*100),0)/grades.length) : null;
+    let t = 'تقرير Dr Academy\nالطالب: ' + student.name + '\nالحضور: ' + present + ' من ' + att.length + ' جلسة\n';
+    t += (avg!==null ? 'المعدل العام: ' + avg + '%\n' : 'لا يوجد درجات مسجلة بعد\n');
+    if(grades.length){ t += 'آخر الدرجات:\n'; grades.slice(-3).forEach(g => { t += '- ' + g.title + ': ' + g.score + '/' + g.max + '\n'; }); }
+    return t;
+  }
+  function waLink(studentId){
+    const s = DB.students.find(x=>x.id===studentId);
+    const text = encodeURIComponent(buildReportText(studentId));
+    const ph0 = phoneOf(studentId);
+    const phone = ph0 ? ph0.replace(/[^0-9]/g,'') : '';
+    return phone ? ('https://wa.me/'+phone+'?text='+text) : ('https://wa.me/?text='+text);
+  }
+  function calcPoints(studentId){
+    const present = DB.attendance.flatMap(a=>a.records.filter(r=>r.studentId===studentId)).filter(r=>r.status==='present').length;
+    return present*5 + DB.hwSubs.filter(s=>s.studentId===studentId).length*10 + DB.submissions.filter(s=>s.studentId===studentId).length*5;
+  }
+  function badgeFor(p){
+    if(p>=150) return {label:'ذهبي', cls:'pill-gold'};
+    if(p>=60) return {label:'فضي', cls:'pill-slate'};
+    return {label:'برونزي', cls:'pill-coral'};
+  }
+  function myCoursesOf(studentId){
+    const ids = DB.enrollments.filter(e=>e.studentId===studentId).map(e=>e.courseId);
+    return DB.courses.filter(c=>ids.includes(c.id));
+  }
+  function pageHeader(title, sub){ return `<div class="page-title">${title}</div><div class="page-sub">${sub||''}</div>`; }
+
+  // ---------- PARENT REPORT ----------
+  function renderParentReport(){
+    const el = document.getElementById('app');
+    const student = DB.students.find(s=>s.id===ctx.studentId);
+    if(!student){ route='login'; ctx={pickedRole:'parent'}; renderLogin(); return; }
+    const att = DB.attendance.flatMap(a=>a.records.filter(r=>r.studentId===student.id));
+    const present = att.filter(r=>r.status==='present').length;
+    const grades = DB.grades.filter(g=>g.studentId===student.id);
+    const avg = grades.length ? Math.round(grades.reduce((a,g)=>a+(g.score/g.max*100),0)/grades.length) : null;
+    el.innerHTML = `<div class="login-wrap" style="align-items:flex-start;"><div class="login-card" style="width:480px;">
+      <div class="login-seal">DA</div>
+      <h1 style="font-size:19px;font-weight:900;margin-bottom:2px;">تقرير الطالب: ${esc(student.name)}</h1>
+      <p class="muted" style="margin-bottom:16px;">Dr Academy — بوابة ولي الأمر</p>
+      <div class="grid grid-2" style="margin-bottom:14px;">
+        <div class="stat-card"><div class="stat-num">${present}/${att.length}</div><div class="stat-label">جلسات الحضور</div></div>
+        <div class="stat-card"><div class="stat-num">${avg!==null?avg+'%':'—'}</div><div class="stat-label">المعدل العام</div></div>
+      </div>
+      <div class="card"><div class="card-title">الدرجات</div>
+        ${grades.length===0 ? '<div class="empty">لا يوجد درجات مسجلة بعد.</div>' :
+        `<table><tr><th>التقييم</th><th>الدرجة</th></tr>${grades.map(g=>`<tr><td>${esc(g.title)}</td><td>${g.score}/${g.max}</td></tr>`).join('')}</table>`}
+      </div>
+      <div class="row">
+        <a class="btn btn-gold" href="${waLink(student.id)}" target="_blank">مشاركة التقرير على واتساب</a>
+        <span class="link-btn" onclick="__logout()">خروج</span>
+      </div>
+    </div></div>`;
+  }
+
+  // ---------- SHELL ----------
+  function navItemsFor(role){
+    if(role==='admin') return [['dash','لوحة التحكم'],['manageTeachers','المدرسون'],['manageStudents','الطلاب'],['manageCourses','الكورسات']];
+    if(role==='teacher') return [['dash','لوحة التحكم'],['myCourses','كورساتي'],['calendar','التقويم']];
+    return [['dash','لوحة التحكم'],['studentCourses','كورساتي'],['studentAttendance','الحضور'],['studentGrades','الدرجات'],['studentExams','الامتحانات'],['studentHomework','الواجبات'],['studentCertificates','شهاداتي'],['calendar','التقويم']];
+  }
+  function renderShell(inner){
+    const el = document.getElementById('app');
+    const roleLabel = ME.role==='admin' ? 'إدارة السنتر' : ME.role==='teacher' ? 'مدرس' : 'طالب';
+    el.innerHTML = `<div class="shell">
+      <div class="sidebar">
+        <div class="brand"><div class="brand-seal">DA</div> Dr Academy</div>
+        <div class="role-tag">${esc(ME.name)} · ${roleLabel}${ME.role==='student' ? ' · '+esc(ME.code||'') : ''}</div>
+        ${navItemsFor(ME.role).map(([r,l]) => `<div class="nav-item ${route===r?'active':''}" onclick="__go('${r}')">${l}</div>`).join('')}
+        <div class="nav-spacer"></div>
+        <div class="logout-btn" onclick="__logout()">تسجيل الخروج</div>
+      </div>
+      <div class="main">${inner}</div>
+    </div>`;
+  }
+
+  // ---------- ADMIN ----------
+  function renderAdminDash(){
+    return pageHeader('لوحة تحكم الإدارة','نظرة عامة على السنتر') + `
+      <div class="grid grid-3">
+        <div class="stat-card"><div class="stat-num">${DB.students.length}</div><div class="stat-label">عدد الطلاب</div></div>
+        <div class="stat-card"><div class="stat-num">${DB.teachers.length}</div><div class="stat-label">عدد المدرسين</div></div>
+        <div class="stat-card"><div class="stat-num">${DB.courses.length}</div><div class="stat-label">عدد الكورسات</div></div>
+      </div>
+      <div style="height:16px"></div>
+      <div class="card">
+        <div class="card-title">الكورسات</div>
+        ${DB.courses.length===0 ? '<div class="empty">لا يوجد كورسات بعد. أضف كورس من صفحة "الكورسات".</div>' :
+        `<table><tr><th>الكورس</th><th>المدرس</th><th>الطلاب</th></tr>${DB.courses.map(c => `<tr><td>${esc(c.name)}</td><td>${esc(c.teacherName)}</td><td>${DB.enrollments.filter(e=>e.courseId===c.id).length}</td></tr>`).join('')}</table>`}
+      </div>`;
+  }
+  window.__saveDailyKey = async function(){
+    SETTINGS.dailyApiKey = document.getElementById('dailyKeyInput').value.trim();
+    await saveSettingsObj(SETTINGS); alert('تم حفظ المفتاح'); render();
+  };
+
+  function codeOf(id){ const c = DB.codes.find(x=>x.userId===id); return c ? c.code : ''; }
+  function phoneOf(id){ const c = DB.contacts.find(x=>x.userId===id); return c ? (c.phone||'') : ''; }
+  function genCode(){
+    const used = new Set(DB.codes.map(c => normCode(c.code)));
+    let c;
+    do{ c = 'Dr#' + String(Math.floor(100000 + Math.random()*900000)); }while(used.has(normCode(c)));
+    return c;
+  }
+  async function makeAuth(code){
+    let sec; try{ sec = getApp('sec'); }catch(e){ sec = initializeApp(firebaseConfig, 'sec'); }
+    const sa = getAuth(sec);
+    const cred = await createUserWithEmailAndPassword(sa, codeToEmail(code), normCode(code));
+    await signOut(sa);
+    return cred.user.uid;
+  }
+  function waCodeLink(u){
+    const code = codeOf(u.id);
+    const text = encodeURIComponent('أهلاً ' + u.name + '\nكود دخولك لمنصة Dr Academy: ' + code + '\nافتح الرابط واكتب الكود فقط:\n' + APP_URL);
+    const ph = phoneOf(u.id); const phone = ph ? ph.replace(/[^0-9]/g,'') : '';
+    return phone ? ('https://wa.me/'+phone+'?text='+text) : ('https://wa.me/?text='+text);
+  }
+  function renderUsers(kind){
+    const isS = kind==='student';
+    const list = isS ? DB.students : DB.teachers;
+    const label = isS ? 'طالب' : 'مدرس';
+    return pageHeader(isS?'إدارة الطلاب':'إدارة المدرسين','أضف '+label+' وهيتولد له كود دخول ترسله له') + `
+      <div class="card"><div class="card-title">إضافة ${label} جديد</div>
+        <div class="row"><input id="newUserName" placeholder="الاسم" style="flex:2;" /><input id="newUserPhone" placeholder="رقم واتساب (اختياري)" style="flex:1;" />
+        <button class="btn btn-gold" onclick="__addUser('${kind}')">إضافة وإنشاء كود</button></div>
+      </div>
+      <div class="card"><div class="card-title"><span>القائمة (${list.length})</span><button class="btn btn-sm btn-outline" onclick="__copyAll('${kind}')">نسخ كل الأكواد</button></div>
+        <div class="muted" style="margin-bottom:10px;">الكود هو بيانات الدخول الوحيدة، فلا ترسله إلا لصاحبه. ${isS ? 'وولي الأمر يدخل بنفس كود ابنه من تبويب "ولي أمر".' : ''}</div>
+        ${list.length===0 ? `<div class="empty">لا يوجد ${isS?'طلاب':'مدرسون'} بعد.</div>` :
+        `<table><tr><th>الاسم</th><th>الكود</th><th>${isS?'النقاط':'الكورسات'}</th><th></th></tr>
+        ${list.map(u=>{ const code = codeOf(u.id); return `<tr><td>${esc(u.name)}</td><td>${code?`<span class="pill pill-slate">${esc(code)}</span>`:'—'}</td>
+          <td>${isS ? calcPoints(u.id) : DB.courses.filter(c=>c.teacherId===u.id).length}</td>
+          <td style="white-space:nowrap;">
+            ${code?`<span class="link-btn" onclick="__copyCode('${esc(code)}')">نسخ</span> · <a class="link-btn" href="${waCodeLink(u)}" target="_blank">واتساب</a> · `:''}
+            <span class="link-btn" onclick="__editUser('${kind}','${u.id}')">تعديل</span> ·
+            <span class="link-btn" onclick="__regenCode('${kind}','${u.id}')">${code?'كود جديد':'إنشاء كود'}</span> ·
+            <span class="link-btn" style="color:var(--coral);" onclick="__removeUser('${kind}','${u.id}')">حذف</span>
+          </td></tr>`; }).join('')}</table>`}
+      </div>`;
+  }
+  function renderManageTeachers(){ return renderUsers('teacher'); }
+  function renderManageStudents(){ return renderUsers('student'); }
+  window.__addUser = async function(kind){
+    const name = document.getElementById('newUserName').value.trim();
+    const phone = document.getElementById('newUserPhone').value.trim();
+    if(!name){ alert('اكتب الاسم'); return; }
+    const code = genCode(); let authUid;
+    try{ authUid = await makeAuth(code); }catch(e){ alert('تعذر إنشاء الحساب: ' + (e.code || e.message)); return; }
+    const id = uid(), batch = writeBatch(fb.db);
+    batch.set(doc(fb.db, kind==='student'?'students':'teachers', id), {id, name});
+    batch.set(doc(fb.db,'contacts',id), {userId:id, phone});
+    batch.set(doc(fb.db,'codes',id), {userId:id, kind, code, authUid});
+    batch.set(doc(fb.db,'roles',authUid), {role:kind, userId:id});
+    try{ await batch.commit(); }catch(e){ alert('تعذر الحفظ: ' + e.message); }
+  };
+  window.__editUser = function(kind, id){
+    const list = kind==='student' ? DB.students : DB.teachers;
+    const u = list.find(x=>x.id===id); if(!u) return;
+    editModal('تعديل البيانات (الكود لا يتغير)', [{id:'name',label:'الاسم',value:u.name},{id:'phone',label:'رقم واتساب',value:phoneOf(id)}], async v=>{
+      if(!v.name){ alert('اكتب الاسم'); return; }
+      const batch = writeBatch(fb.db);
+      batch.set(doc(fb.db, kind==='student'?'students':'teachers', id), {id, name:v.name});
+      batch.set(doc(fb.db,'contacts',id), {userId:id, phone:v.phone});
+      try{ await batch.commit(); }catch(e){ alert('تعذر الحفظ'); return; }
+      if(kind==='teacher'){ DB.courses.forEach(c=>{ if(c.teacherId===id) c.teacherName = v.name; }); await saveShared(KEYS.courses, DB.courses); }
+    });
+  };
+  window.__regenCode = async function(kind, id){
+    const old = DB.codes.find(x=>x.userId===id);
+    if(old && !(await askConfirm('الكود القديم هيبطل يشتغل. متأكد؟'))) return;
+    const code = genCode(); let authUid;
+    try{ authUid = await makeAuth(code); }catch(e){ alert('تعذر إنشاء الكود: ' + (e.code || e.message)); return; }
+    const batch = writeBatch(fb.db);
+    batch.set(doc(fb.db,'codes',id), {userId:id, kind, code, authUid});
+    batch.set(doc(fb.db,'roles',authUid), {role:kind, userId:id});
+    if(old && old.authUid) batch.delete(doc(fb.db,'roles',old.authUid));
+    try{ await batch.commit(); }catch(e){ alert('تعذر الحفظ: ' + e.message); }
+  };
+  window.__removeUser = async function(kind, id){
+    if(!(await askConfirm('حذف نهائياً؟'))) return;
+    const old = DB.codes.find(x=>x.userId===id);
+    const batch = writeBatch(fb.db);
+    batch.delete(doc(fb.db, kind==='student'?'students':'teachers', id));
+    batch.delete(doc(fb.db,'contacts',id));
+    batch.delete(doc(fb.db,'codes',id));
+    if(old && old.authUid) batch.delete(doc(fb.db,'roles',old.authUid));
+    if(kind==='student') DB.enrollments.filter(e=>e.studentId===id).forEach(e=>batch.delete(doc(fb.db,'enrollments',e.courseId+'_'+e.studentId)));
+    try{ await batch.commit(); }catch(e){ alert('تعذر الحذف: ' + e.message); }
+  };
+  window.__copyCode = function(c){
+    try{ navigator.clipboard.writeText(c).then(()=>toast('تم نسخ الكود: '+c), ()=>showText('انسخ الكود', c)); }
+    catch(e){ showText('انسخ الكود', c); }
+  };
+  window.__copyAll = function(kind){
+    const list = kind==='student' ? DB.students : DB.teachers;
+    const txt = list.map(u=>u.name+' - '+(codeOf(u.id)||'بدون كود')).join('\n');
+    try{ navigator.clipboard.writeText(txt).then(()=>toast('تم نسخ القائمة'), ()=>showText('انسخ القائمة', txt)); }
+    catch(e){ showText('انسخ القائمة', txt); }
+  };
+
+  function renderManageCourses(){
+    return pageHeader('إدارة الكورسات','إنشاء كورس جديد وتعيين مدرس له') + `
+      <div class="card"><div class="card-title">إنشاء كورس جديد</div>
+        <div class="field"><label>اسم الكورس</label><input id="newCourseName" placeholder="مثال: رياضيات - الصف الثالث الثانوي" /></div>
+        <div class="field"><label>المدرس المسؤول</label><select id="newCourseTeacher"><option value="">اختر مدرس</option>${DB.teachers.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select></div>
+        <div class="field"><label>وصف مختصر</label><textarea id="newCourseDesc" rows="2" placeholder="وصف الكورس..."></textarea></div>
+        <button class="btn btn-gold" onclick="__addCourse()">إنشاء الكورس</button>
+      </div>
+      <div class="card"><div class="card-title">الكورسات الحالية (${DB.courses.length})</div>
+        ${DB.courses.length===0 ? '<div class="empty">لم يتم إنشاء أي كورس بعد.</div>' :
+        DB.courses.map(c => `<div class="row" style="border-bottom:1px solid var(--line);padding:10px 0;">
+          <div class="course-strip"></div>
+          <div style="flex:1;"><div style="font-weight:700;">${esc(c.name)}${c.liveActive ? ' <span class="pill pill-coral">🔴 بث مباشر</span>' : ''}</div>
+          <div class="muted">المدرس: ${esc(c.teacherName)} · ${DB.enrollments.filter(e=>e.courseId===c.id).length} طالب</div></div>
+          <span class="link-btn" onclick="__go('adminEnroll',{courseId:'${c.id}'})">تسجيل طلاب</span>
+          <span class="link-btn" onclick="__removeCourse('${c.id}')" style="color:var(--coral);">حذف</span>
+        </div>`).join('')}
+      </div>`;
+  }
+  window.__addCourse = async function(){
+    const name = document.getElementById('newCourseName').value.trim();
+    const teacherId = document.getElementById('newCourseTeacher').value;
+    const desc = document.getElementById('newCourseDesc').value.trim();
+    if(!name || !teacherId){ alert('من فضلك اكتب اسم الكورس واختر المدرس'); return; }
+    const teacher = DB.teachers.find(t=>t.id===teacherId);
+    DB.courses.push({id:uid(), name, teacherId, teacherName:teacher.name, desc, materials:[], liveActive:false, liveUrl:'', liveStartedAt:null});
+    await saveShared(KEYS.courses, DB.courses); render();
+  };
+  window.__removeCourse = async function(id){
+    if(!(await askConfirm('حذف هذا الكورس نهائياً؟'))) return;
+    DB.courses = DB.courses.filter(c=>c.id!==id);
+    DB.enrollments = DB.enrollments.filter(e=>e.courseId!==id);
+    await saveShared(KEYS.courses, DB.courses); await saveShared(KEYS.enrollments, DB.enrollments); render();
+  };
+  function renderAdminEnroll(){
+    const course = DB.courses.find(c=>c.id===ctx.courseId);
+    if(!course) return pageHeader('الكورس غير موجود','');
+    const enrolled = new Set(DB.enrollments.filter(e=>e.courseId===course.id).map(e=>e.studentId));
+    return pageHeader('تسجيل طلاب: '+esc(course.name),'اختر الطلاب المسجلين في هذا الكورس') + `<div class="card">
+      ${DB.students.length===0 ? '<div class="empty">لا يوجد طلاب مسجلون في المنصة بعد.</div>' :
+      DB.students.map(s => `<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);"><input type="checkbox" ${enrolled.has(s.id)?'checked':''} onchange="__toggleEnroll('${course.id}','${s.id}', this.checked)" style="width:auto;" /><div>${esc(s.name)}</div></div>`).join('')}
+    </div><button class="btn btn-outline" onclick="__go('manageCourses')">رجوع للكورسات</button>`;
+  }
+  window.__toggleEnroll = async function(courseId, studentId, checked){
+    if(checked){ if(!DB.enrollments.find(e=>e.courseId===courseId && e.studentId===studentId)) DB.enrollments.push({courseId, studentId}); }
+    else { DB.enrollments = DB.enrollments.filter(e=>!(e.courseId===courseId && e.studentId===studentId)); }
+    await saveShared(KEYS.enrollments, DB.enrollments);
+  };
+
+  // ---------- CALENDAR ----------
+  function renderCalendar(){
+    const courses = ME.role==='teacher' ? DB.courses.filter(c=>c.teacherId===ME.id) : myCoursesOf(ME.id);
+    const ids = courses.map(c=>c.id);
+    const nameOf = id => { const c = courses.find(x=>x.id===id); return c ? c.name : ''; };
+    let items = [];
+    DB.homework.filter(h=>ids.includes(h.courseId)).forEach(h=>items.push({date:h.due||'', type:'واجب', label:h.title, course:nameOf(h.courseId)}));
+    DB.exams.filter(e=>ids.includes(e.courseId)).forEach(e=>items.push({date:e.scheduledDate||'', type:'امتحان', label:e.title, course:nameOf(e.courseId)}));
+    DB.attendance.filter(a=>ids.includes(a.courseId)).forEach(a=>items.push({date:a.date, type:'جلسة حضور', label:'أخذ حضور', course:nameOf(a.courseId)}));
+    DB.events.filter(ev=>ids.includes(ev.courseId)).forEach(ev=>items.push({date:ev.date, type:'موعد', label:ev.title, course:nameOf(ev.courseId), eventId:ev.id}));
+    items = items.filter(i=>i.date).sort((a,b)=>a.date.localeCompare(b.date));
+    const addForm = ME.role==='teacher' ? `<div class="card"><div class="card-title">إضافة موعد للتقويم</div>
+      ${courses.length===0 ? '<div class="empty">لا يوجد كورسات مسندة إليك.</div>' : `
+      <div class="field"><label>الكورس</label><select id="evCourse">${courses.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></div>
+      <div class="field"><label>عنوان الموعد</label><input id="evTitle" placeholder="مثال: حصة مراجعة" /></div>
+      <div class="field"><label>التاريخ</label><input id="evDate" type="date" /></div>
+      <button class="btn btn-gold" onclick="__addEvent()">إضافة الموعد</button>`}</div>` : '';
+    return pageHeader('التقويم الموحد','كل مواعيد الواجبات والامتحانات والحضور في مكان واحد') + addForm + `<div class="card">
+      ${items.length===0 ? '<div class="empty">لا يوجد مواعيد محددة بعد.</div>' :
+      `<table><tr><th>التاريخ</th><th>النوع</th><th>التفاصيل</th><th>الكورس</th></tr>${items.map(i=>`<tr><td>${i.date}</td><td><span class="pill ${i.type==='واجب'?'pill-gold':i.type==='امتحان'?'pill-coral':i.type==='موعد'?'pill-slate':'pill-teal'}">${i.type}</span></td><td>${esc(i.label)}${i.eventId && ME.role==='teacher' ? ' <span class="link-btn" style="color:var(--coral);" onclick="__removeEvent(\''+i.eventId+'\')">حذف</span>' : ''}</td><td>${esc(i.course)}</td></tr>`).join('')}</table>`}
+    </div>`;
+  }
+
+  window.__addEvent = async function(){
+    const courseId = document.getElementById('evCourse').value;
+    const title = document.getElementById('evTitle').value.trim();
+    const date = document.getElementById('evDate').value;
+    if(!title || !date){ alert('اكتب عنوان الموعد واختر التاريخ'); return; }
+    DB.events.push({id:uid(), courseId, title, date});
+    await saveShared(KEYS.events, DB.events); render();
+  };
+  window.__removeEvent = async function(id){
+    DB.events = DB.events.filter(e=>e.id!==id);
+    await saveShared(KEYS.events, DB.events); render();
+  };
+
+  // ---------- TEACHER ----------
+  function renderTeacherDash(){
+    const my = DB.courses.filter(c=>c.teacherId===ME.id);
+    return pageHeader('لوحة تحكم المدرس','مرحباً '+esc(ME.name)) + `
+      <div class="grid grid-3">
+        <div class="stat-card"><div class="stat-num">${my.length}</div><div class="stat-label">كورساتي</div></div>
+        <div class="stat-card"><div class="stat-num">${DB.enrollments.filter(e=>my.some(c=>c.id===e.courseId)).length}</div><div class="stat-label">إجمالي طلابي</div></div>
+        <div class="stat-card"><div class="stat-num">${DB.exams.filter(e=>my.some(c=>c.id===e.courseId)).length}</div><div class="stat-label">امتحانات منشأة</div></div>
+      </div>
+      <div class="card" style="margin-top:16px;"><div class="card-title">كورساتي</div>
+        ${my.length===0 ? '<div class="empty">لم تُسند لك أي كورسات بعد من الإدارة.</div>' :
+        my.map(c=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer;" onclick="__go('teacherCourse',{courseId:'${c.id}'})"><div class="course-strip"></div><div style="flex:1;font-weight:700;">${esc(c.name)}${c.liveActive?' <span class="pill pill-coral">🔴 مباشر</span>':''}</div><span class="muted">${DB.enrollments.filter(e=>e.courseId===c.id).length} طالب</span></div>`).join('')}
+      </div>`;
+  }
+  function renderMyCourses(){
+    const my = DB.courses.filter(c=>c.teacherId===ME.id);
+    return pageHeader('كورساتي','') + (my.length===0 ? '<div class="empty">لا يوجد كورسات مسندة إليك.</div>' :
+      `<div class="grid grid-2">${my.map(c=>`<div class="card" style="cursor:pointer;" onclick="__go('teacherCourse',{courseId:'${c.id}'})"><div class="card-title">${esc(c.name)}</div><div class="muted">${esc(c.desc||'')}</div><div class="muted" style="margin-top:8px;">${DB.enrollments.filter(e=>e.courseId===c.id).length} طالب مسجل</div></div>`).join('')}</div>`);
+  }
+  function renderTeacherCourse(){
+    const course = DB.courses.find(c=>c.id===ctx.courseId);
+    if(!course) return pageHeader('الكورس غير موجود','');
+    const tab = ctx.tab || 'materials';
+    const tabs = [['materials','المحتوى'],['live','البث المباشر'],['attendance','الحضور'],['grades','الدرجات'],['exams','الامتحانات'],['bank','بنك الأسئلة'],['homework','الواجبات'],['certificates','الشهادات']];
+    const fn = {materials:renderTeacherMaterials, live:renderTeacherLive, attendance:renderTeacherAttendance, grades:renderTeacherGrades, exams:renderTeacherExams, bank:renderTeacherBank, homework:renderTeacherHomework, certificates:renderTeacherCertificates}[tab];
+    return pageHeader(esc(course.name), esc(course.desc||'')) + `<div class="tab-row">${tabs.map(([t,l])=>`<div class="tab-label ${tab===t?'active':''}" onclick="__go('teacherCourse',{courseId:'${course.id}',tab:'${t}'})">${l}</div>`).join('')}</div>` + fn(course);
+  }
+
+  function renderTeacherMaterials(course){
+    return `<div class="card"><div class="card-title">إضافة محتوى / فيديو</div>
+      <div class="field"><label>العنوان</label><input id="matTitle" placeholder="مثال: الدرس الأول" /></div>
+      <div class="field"><label>رابط الفيديو (يوتيوب/فيميو)</label><input id="matUrl" placeholder="https://..." /></div>
+      <button class="btn btn-gold" onclick="__addMaterial('${course.id}')">إضافة</button></div>
+    <div class="card"><div class="card-title">المحتوى الحالي (${(course.materials||[]).length})</div>
+      ${(course.materials||[]).length===0 ? '<div class="empty">لا يوجد محتوى مضاف بعد.</div>' :
+      course.materials.map((m,i)=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);"><div style="flex:1;"><div style="font-weight:700;">${esc(m.title)}</div><div class="muted">${esc(m.url)}</div></div>
+        <span class="link-btn" onclick="__editMaterial('${course.id}',${i})">تعديل</span>
+        <span class="link-btn" style="color:var(--coral);" onclick="__removeMaterial('${course.id}',${i})">حذف</span></div>`).join('')}
+    </div>`;
+  }
+  window.__addMaterial = async function(courseId){
+    const title = document.getElementById('matTitle').value.trim();
+    const url = document.getElementById('matUrl').value.trim();
+    if(!title || !url){ alert('اكتب العنوان والرابط'); return; }
+    const c = DB.courses.find(x=>x.id===courseId); c.materials = c.materials||[]; c.materials.push({title,url});
+    await saveShared(KEYS.courses, DB.courses); render();
+  };
+  window.__editMaterial = function(courseId, idx){
+    const c = DB.courses.find(x=>x.id===courseId); const m = c.materials[idx];
+    editModal('تعديل المحتوى', [{id:'title',label:'العنوان',value:m.title},{id:'url',label:'الرابط',value:m.url}], async v=>{
+      if(!v.title || !v.url){ alert('كمّل البيانات'); return; }
+      m.title = v.title; m.url = v.url; await saveShared(KEYS.courses, DB.courses); render();
+    });
+  };
+  window.__removeMaterial = async function(courseId, idx){
+    if(!(await askConfirm('حذف هذا المحتوى؟'))) return;
+    const c = DB.courses.find(x=>x.id===courseId); c.materials.splice(idx,1);
+    await saveShared(KEYS.courses, DB.courses); render();
+  };
+
+  function renderTeacherLive(course){
+    if(course.liveActive) return `<div class="card"><div class="card-title">🔴 البث شغال الآن</div>
+      <div class="video-protect" style="background:#111;"><iframe src="${esc(course.liveUrl)}" allow="camera; microphone; fullscreen; display-capture; autoplay" style="width:100%;height:420px;border:none;display:block;"></iframe></div>
+      <button class="btn btn-danger" onclick="__endLive('${course.id}')">إنهاء البث</button></div>`;
+    return `<div class="card"><div class="card-title">بدء بث مباشر</div>
+      <div class="muted" style="margin-bottom:10px;">أنشئ غرفة من لوحة Daily.co (Rooms ← Create room) والصق رابطها هنا، وهتظهر كبانر لطلاب الكورس.</div>
+      <div class="field"><label>رابط غرفة Daily</label><input id="liveUrlInput" placeholder="https://yourname.daily.co/room" /></div>
+      <button class="btn btn-live" onclick="__startLive('${course.id}')">🔴 ابدأ البث</button></div>`;
+  }
+  window.__startLive = async function(courseId){
+    const url = document.getElementById('liveUrlInput').value.trim();
+    if(!/^https:\/\/[a-z0-9-]+\.daily\.co\/.+/i.test(url)){ alert('الصق رابط غرفة Daily صحيح (https://...daily.co/...)'); return; }
+    const course = DB.courses.find(c=>c.id===courseId);
+    course.liveUrl = url; course.liveActive = true; course.liveStartedAt = Date.now();
+    await saveShared(KEYS.courses, DB.courses); render();
+  };
+  window.__endLive = async function(courseId){
+    const c = DB.courses.find(x=>x.id===courseId); c.liveActive = false;
+    await saveShared(KEYS.courses, DB.courses); render();
+  };
+
+  function renderTeacherAttendance(course){
+    const students = DB.students.filter(s => DB.enrollments.some(e=>e.courseId===course.id && e.studentId===s.id));
+    const sessions = DB.attendance.filter(a=>a.courseId===course.id).sort((a,b)=>b.date.localeCompare(a.date));
+    const today = new Date().toISOString().slice(0,10);
+    return `<div class="card"><div class="card-title">تسجيل حضور جلسة جديدة</div>
+      <div class="field"><label>التاريخ</label><input id="attDate" type="date" value="${today}" /></div>
+      ${students.length===0 ? '<div class="empty">لا يوجد طلاب مسجلين في هذا الكورس.</div>' :
+      students.map(s=>`<div class="row" style="padding:6px 0;"><div style="flex:1;">${esc(s.name)}</div><select id="att_${s.id}" style="width:110px;"><option value="present">حاضر</option><option value="absent">غائب</option></select></div>`).join('')}
+      ${students.length>0 ? `<button class="btn btn-gold" style="margin-top:10px;" onclick="__saveAttendance('${course.id}')">حفظ الحضور</button>` : ''}
+    </div>
+    <div class="card"><div class="card-title">سجل الجلسات (${sessions.length})</div>
+      ${sessions.length===0 ? '<div class="empty">لا يوجد جلسات مسجلة بعد.</div>' :
+      sessions.map(s=>`<div style="padding:10px 0;border-bottom:1px solid var(--line);">
+        <div class="row" style="margin-bottom:6px;"><div style="font-weight:700;flex:1;">${s.date}</div>
+          <span class="link-btn" onclick="__editAttendance('${course.id}','${s.date}')">تعديل</span>
+          <span class="link-btn" style="color:var(--coral);" onclick="__deleteAttendance('${course.id}','${s.date}')">حذف</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">${s.records.map(r=>{const st=DB.students.find(x=>x.id===r.studentId); return `<span class="pill ${r.status==='present'?'pill-teal':'pill-coral'}">${esc(st?st.name:'؟')} · ${r.status==='present'?'حاضر':'غائب'}</span>`;}).join('')}</div></div>`).join('')}
+    </div>`;
+  }
+  window.__saveAttendance = async function(courseId){
+    const students = DB.students.filter(s => DB.enrollments.some(e=>e.courseId===courseId && e.studentId===s.id));
+    const date = document.getElementById('attDate').value; if(!date){ alert('اختر التاريخ'); return; }
+    const records = students.map(s => ({studentId:s.id, status: document.getElementById('att_'+s.id).value}));
+    DB.attendance = DB.attendance.filter(a=>!(a.courseId===courseId && a.date===date));
+    DB.attendance.push({courseId, date, records});
+    await saveShared(KEYS.attendance, DB.attendance); render();
+  };
+  window.__editAttendance = function(courseId, date){
+    const sess = DB.attendance.find(a=>a.courseId===courseId && a.date===date); if(!sess) return;
+    const rows = sess.records.map(r=>{ const st = DB.students.find(x=>x.id===r.studentId);
+      return '<div class="row" style="padding:5px 0;"><div style="flex:1;">'+esc(st?st.name:'؟')+'</div><select data-sid="'+r.studentId+'" style="width:100px;"><option value="present"'+(r.status==='present'?' selected':'')+'>حاضر</option><option value="absent"'+(r.status==='absent'?' selected':'')+'>غائب</option></select></div>'; }).join('');
+    const o = uiModal('<div style="font-weight:700;margin-bottom:10px;">تعديل حضور '+esc(date)+'</div>'+rows+'<div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-gold" id="emSave" style="flex:1;">حفظ</button><button class="btn btn-outline" id="emCancel" style="flex:1;">إلغاء</button></div>');
+    o.querySelector('#emCancel').onclick = ()=>o.remove();
+    o.querySelector('#emSave').onclick = async ()=>{
+      o.querySelectorAll('select[data-sid]').forEach(sel=>{ const r = sess.records.find(x=>x.studentId===sel.getAttribute('data-sid')); if(r) r.status = sel.value; });
+      o.remove(); await saveShared(KEYS.attendance, DB.attendance); render();
+    };
+  };
+  window.__deleteAttendance = async function(courseId, date){
+    if(!(await askConfirm('حذف جلسة '+date+' بالكامل؟'))) return;
+    DB.attendance = DB.attendance.filter(a=>!(a.courseId===courseId && a.date===date));
+    await saveShared(KEYS.attendance, DB.attendance); render();
+  };
+
+  function renderTeacherGrades(course){
+    const students = DB.students.filter(s => DB.enrollments.some(e=>e.courseId===course.id && e.studentId===s.id));
+    const grades = DB.grades.filter(g=>g.courseId===course.id).sort((a,b)=>b.createdAt-a.createdAt);
+    return `<div class="card"><div class="card-title">إضافة درجة</div>
+      ${students.length===0 ? '<div class="empty">لا يوجد طلاب مسجلين في هذا الكورس.</div>' : `
+      <div class="field"><label>الطالب</label><select id="gradeStudent">${students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></div>
+      <div class="field"><label>عنوان التقييم</label><input id="gradeTitle" placeholder="مثال: اختبار الشهر الأول" /></div>
+      <div class="row"><div class="field" style="flex:1;"><label>الدرجة</label><input id="gradeScore" type="number" /></div><div class="field" style="flex:1;"><label>من</label><input id="gradeMax" type="number" placeholder="100" /></div></div>
+      <button class="btn btn-gold" onclick="__addGrade('${course.id}')">حفظ الدرجة</button>`}
+    </div>
+    <div class="card"><div class="card-title">تقارير ولي الأمر عبر واتساب</div>
+      ${students.length===0 ? '<div class="empty">لا يوجد طلاب.</div>' :
+      students.map(s=>`<div class="row" style="padding:6px 0;border-bottom:1px solid var(--line);"><div style="flex:1;">${esc(s.name)}</div><a class="btn btn-sm btn-outline" href="${waLink(s.id)}" target="_blank">📤 إرسال تقرير واتساب</a></div>`).join('')}
+    </div>
+    <div class="card"><div class="card-title">سجل الدرجات (${grades.length})</div>
+      ${grades.length===0 ? '<div class="empty">لا يوجد درجات مسجلة بعد.</div>' :
+      `<table><tr><th>الطالب</th><th>التقييم</th><th>الدرجة</th><th></th></tr>${grades.map(g=>{const st=DB.students.find(s=>s.id===g.studentId); return `<tr><td>${esc(st?st.name:'؟')}</td><td>${esc(g.title)}</td><td>${g.score}/${g.max}</td>
+        <td style="white-space:nowrap;"><span class="link-btn" onclick="__editGrade('${g.id}')">تعديل</span> · <span class="link-btn" style="color:var(--coral);" onclick="__deleteGrade('${g.id}')">حذف</span></td></tr>`;}).join('')}</table>`}
+    </div>`;
+  }
+  window.__addGrade = async function(courseId){
+    const studentId = document.getElementById('gradeStudent').value;
+    const title = document.getElementById('gradeTitle').value.trim();
+    const score = Number(document.getElementById('gradeScore').value);
+    const max = Number(document.getElementById('gradeMax').value);
+    if(!title || !max){ alert('من فضلك أكمل بيانات الدرجة'); return; }
+    DB.grades.push({id:uid(), courseId, studentId, title, score, max, createdAt:Date.now()});
+    await saveShared(KEYS.grades, DB.grades); render();
+  };
+  window.__editGrade = function(id){
+    const g = DB.grades.find(x=>x.id===id); if(!g) return;
+    editModal('تعديل الدرجة', [{id:'title',label:'عنوان التقييم',value:g.title},{id:'score',label:'الدرجة',type:'number',value:g.score},{id:'max',label:'من',type:'number',value:g.max}], async v=>{
+      const score = Number(v.score), max = Number(v.max);
+      if(!v.title || !max || v.score===''){ alert('كمّل البيانات'); return; }
+      g.title = v.title; g.score = score; g.max = max;
+      await saveShared(KEYS.grades, DB.grades); render();
+    });
+  };
+  window.__deleteGrade = async function(id){
+    if(!(await askConfirm('حذف هذه الدرجة؟'))) return;
+    DB.grades = DB.grades.filter(g=>g.id!==id);
+    await saveShared(KEYS.grades, DB.grades); render();
+  };
+
+  function renderTeacherBank(course){
+    const bank = DB.qbank.filter(q=>q.courseId===course.id);
+    return `<div class="card"><div class="card-title">إضافة سؤال لبنك الأسئلة</div>
+      <div class="field"><label>نص السؤال</label><input id="bankText" /></div>
+      <input id="bankA" placeholder="اختيار أ" style="margin-bottom:6px;" /><input id="bankB" placeholder="اختيار ب" style="margin-bottom:6px;" /><input id="bankC" placeholder="اختيار ج" style="margin-bottom:6px;" />
+      <div class="field"><label>الإجابة الصحيحة</label><select id="bankCorrect"><option value="0">أ</option><option value="1">ب</option><option value="2">ج</option></select></div>
+      <button class="btn btn-gold" onclick="__addBankQuestion('${course.id}')">إضافة للبنك</button></div>
+    <div class="card"><div class="card-title">أسئلة البنك (${bank.length})</div>
+      <div class="muted" style="margin-bottom:10px;">تقدر تختار منها وانت بتنشئ امتحان جديد.</div>
+      ${bank.length===0 ? '<div class="empty">لا يوجد أسئلة في البنك بعد.</div>' :
+      bank.map(q=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);"><div style="flex:1;">${esc(q.text)}</div><span class="link-btn" style="color:var(--coral);" onclick="__removeBankQuestion('${q.id}')">حذف</span></div>`).join('')}
+    </div>`;
+  }
+  window.__addBankQuestion = async function(courseId){
+    const text = document.getElementById('bankText').value.trim();
+    const a = document.getElementById('bankA').value.trim(), b = document.getElementById('bankB').value.trim(), c = document.getElementById('bankC').value.trim();
+    const correct = Number(document.getElementById('bankCorrect').value);
+    if(!text||!a||!b||!c){ alert('كمّل كل بيانات السؤال'); return; }
+    DB.qbank.push({id:uid(), courseId, text, options:[a,b,c], correct});
+    await saveShared(KEYS.qbank, DB.qbank); render();
+  };
+  window.__removeBankQuestion = async function(id){
+    DB.qbank = DB.qbank.filter(q=>q.id!==id); await saveShared(KEYS.qbank, DB.qbank); render();
+  };
+
+  function renderTeacherExams(course){
+    const exams = DB.exams.filter(e=>e.courseId===course.id);
+    const bank = DB.qbank.filter(q=>q.courseId===course.id);
+    if(ctx.examResults){
+      const exam = exams.find(e=>e.id===ctx.examResults);
+      const subs = DB.submissions.filter(s=>s.examId===exam.id);
+      return `<div class="card"><div class="card-title">نتائج: ${esc(exam.title)}</div>
+        ${subs.length===0 ? '<div class="empty">لا يوجد طلاب قدموا الامتحان بعد.</div>' :
+        `<table><tr><th>الطالب</th><th>الدرجة</th></tr>${subs.map(s=>{const st=DB.students.find(x=>x.id===s.studentId); return `<tr><td>${esc(st?st.name:'؟')}</td><td>${s.score}/${exam.questions.length}</td></tr>`;}).join('')}</table>`}
+        <button class="btn btn-outline" style="margin-top:10px;" onclick="__go('teacherCourse',{courseId:'${course.id}',tab:'exams'})">رجوع</button></div>`;
+    }
+    const qCount = ctx.examQCount || 1;
+    return `<div class="card"><div class="card-title">إنشاء امتحان جديد</div>
+      <div class="field"><label>عنوان الامتحان</label><input id="examTitle" /></div>
+      <div class="field"><label>تاريخ الامتحان (اختياري - يظهر في التقويم)</label><input id="examDate" type="date" /></div>
+      <div class="field"><label>مدة الامتحان بالدقائق (اختياري - يتسلم تلقائياً بعد انتهائها)</label><input id="examDur" type="number" min="1" placeholder="مثال: 30" /></div>
+      <div class="row"><div class="field" style="flex:1;"><label>يفتح في (اختياري)</label><input id="examOpen" type="datetime-local" /></div>
+      <div class="field" style="flex:1;"><label>يُغلق في (اختياري)</label><input id="examClose" type="datetime-local" /></div></div>
+      ${bank.length===0 ? '' : `<div class="qbox"><label>اختر من بنك الأسئلة</label>${bank.map(q=>`<div class="row" style="padding:4px 0;"><input type="checkbox" class="bankq" value="${q.id}" style="width:auto;" /><div>${esc(q.text)}</div></div>`).join('')}</div>`}
+      ${Array.from({length:qCount}).map((_,i)=>`<div class="qbox"><label>سؤال يدوي ${i+1} (اتركه فاضي لو مش محتاجه)</label>
+        <input id="q_${i}_text" placeholder="نص السؤال" style="margin-bottom:6px;" /><input id="q_${i}_a" placeholder="اختيار أ" style="margin-bottom:6px;" /><input id="q_${i}_b" placeholder="اختيار ب" style="margin-bottom:6px;" /><input id="q_${i}_c" placeholder="اختيار ج" style="margin-bottom:6px;" />
+        <select id="q_${i}_correct"><option value="0">الإجابة الصحيحة: أ</option><option value="1">الإجابة الصحيحة: ب</option><option value="2">الإجابة الصحيحة: ج</option></select></div>`).join('')}
+      <button class="btn btn-outline btn-sm" onclick="__addExamQuestion()">+ سؤال يدوي آخر</button>
+      <div style="margin-top:12px;"><button class="btn btn-gold" onclick="__saveExam('${course.id}', ${qCount})">حفظ الامتحان</button></div>
+    </div>
+    <div class="card"><div class="card-title">امتحانات الكورس (${exams.length})</div>
+      ${exams.length===0 ? '<div class="empty">لا يوجد امتحانات منشأة بعد.</div>' :
+      exams.map(e=>`<div style="padding:9px 0;border-bottom:1px solid var(--line);">
+        <div class="row"><div style="flex:1;font-weight:700;">${esc(e.title)}</div><span class="muted">${e.questions.length} سؤال</span></div>
+        <div class="muted" style="margin:3px 0 6px;">${e.scheduledDate?'التاريخ: '+e.scheduledDate+' · ':''}${e.durationMin?'المدة: '+e.durationMin+' دقيقة · ':''}${e.opensAt?'يفتح: '+fmtDT(e.opensAt)+' · ':''}${e.closesAt?'يُغلق: '+fmtDT(e.closesAt):''}</div>
+        <div class="row"><span class="link-btn" onclick="__go('teacherCourse',{courseId:'${course.id}',tab:'exams',examResults:'${e.id}'})">عرض النتائج</span>
+        <span class="link-btn" onclick="__editExam('${e.id}')">تعديل</span>
+        <span class="link-btn" style="color:var(--coral);" onclick="__deleteExam('${e.id}')">حذف</span></div></div>`).join('')}
+    </div>`;
+  }
+  window.__addExamQuestion = function(){ ctx.examQCount = (ctx.examQCount||1)+1; render(); };
+  window.__saveExam = async function(courseId, qCount){
+    const title = document.getElementById('examTitle').value.trim();
+    const scheduledDate = document.getElementById('examDate').value;
+    const durationMin = Number(document.getElementById('examDur').value) || 0;
+    const opensAt = document.getElementById('examOpen').value;
+    const closesAt = document.getElementById('examClose').value;
+    if(!title){ alert('اكتب عنوان الامتحان'); return; }
+    if(opensAt && closesAt && new Date(closesAt) <= new Date(opensAt)){ alert('وقت الإغلاق لازم يكون بعد وقت الفتح'); return; }
+    let questions = [];
+    document.querySelectorAll('.bankq:checked').forEach(cb=>{ const bq = DB.qbank.find(q=>q.id===cb.value); if(bq) questions.push({text:bq.text, options:bq.options, correct:bq.correct}); });
+    for(let i=0;i<qCount;i++){
+      const text = document.getElementById('q_'+i+'_text').value.trim();
+      const a = document.getElementById('q_'+i+'_a').value.trim(), b = document.getElementById('q_'+i+'_b').value.trim(), c = document.getElementById('q_'+i+'_c').value.trim();
+      const correct = Number(document.getElementById('q_'+i+'_correct').value);
+      if(!text||!a||!b||!c) continue;
+      questions.push({text, options:[a,b,c], correct});
+    }
+    if(questions.length===0){ alert('أضف سؤالاً واحداً على الأقل'); return; }
+    DB.exams.push({id:uid(), courseId, title, questions, scheduledDate, durationMin, opensAt, closesAt});
+    await saveShared(KEYS.exams, DB.exams);
+    ctx = {courseId, tab:'exams'}; render();
+  };
+  window.__editExam = function(id){
+    const e = DB.exams.find(x=>x.id===id); if(!e) return;
+    editModal('تعديل الامتحان', [
+      {id:'title',label:'العنوان',value:e.title},
+      {id:'date',label:'تاريخ الامتحان',type:'date',value:e.scheduledDate||''},
+      {id:'dur',label:'المدة بالدقائق (فاضي = بدون مدة)',type:'number',value:e.durationMin||''},
+      {id:'open',label:'يفتح في',type:'datetime-local',value:e.opensAt||''},
+      {id:'close',label:'يُغلق في',type:'datetime-local',value:e.closesAt||''}
+    ], async v=>{
+      if(!v.title){ alert('اكتب العنوان'); return; }
+      if(v.open && v.close && new Date(v.close) <= new Date(v.open)){ alert('وقت الإغلاق لازم يكون بعد وقت الفتح'); return; }
+      e.title = v.title; e.scheduledDate = v.date; e.durationMin = Number(v.dur)||0; e.opensAt = v.open; e.closesAt = v.close;
+      await saveShared(KEYS.exams, DB.exams); render();
+    });
+  };
+  window.__deleteExam = async function(id){
+    if(!(await askConfirm('حذف هذا الامتحان ونتائجه؟'))) return;
+    DB.exams = DB.exams.filter(e=>e.id!==id);
+    DB.submissions = DB.submissions.filter(s=>s.examId!==id);
+    await saveShared(KEYS.exams, DB.exams); await saveShared(KEYS.submissions, DB.submissions); render();
+  };
+
+  function renderTeacherHomework(course){
+    const hw = DB.homework.filter(h=>h.courseId===course.id);
+    if(ctx.hwResults){
+      const item = hw.find(h=>h.id===ctx.hwResults);
+      const subs = DB.hwSubs.filter(s=>s.hwId===item.id);
+      return `<div class="card"><div class="card-title">تسليمات: ${esc(item.title)}</div>
+        ${subs.length===0 ? '<div class="empty">لا يوجد تسليمات بعد.</div>' :
+        subs.map(s=>{const st=DB.students.find(x=>x.id===s.studentId); return `<div class="qbox"><b>${esc(st?st.name:'؟')}</b><div class="muted" style="margin:6px 0;">${esc(s.content)}</div><div class="row"><input placeholder="التقدير/الدرجة" id="hwgrade_${s.studentId}_${item.id}" value="${esc(s.grade||'')}" style="max-width:160px;" /><button class="btn btn-sm btn-outline" onclick="__gradeHw('${item.id}','${s.studentId}')">حفظ</button></div></div>`;}).join('')}
+        <button class="btn btn-outline" style="margin-top:6px;" onclick="__go('teacherCourse',{courseId:'${course.id}',tab:'homework'})">رجوع</button></div>`;
+    }
+    return `<div class="card"><div class="card-title">إضافة واجب جديد</div>
+      <div class="field"><label>عنوان الواجب</label><input id="hwTitle" /></div>
+      <div class="field"><label>الوصف</label><textarea id="hwDesc" rows="2"></textarea></div>
+      <div class="field"><label>آخر موعد للتسليم</label><input id="hwDue" type="date" /></div>
+      <button class="btn btn-gold" onclick="__addHomework('${course.id}')">إضافة الواجب</button></div>
+    <div class="card"><div class="card-title">الواجبات (${hw.length})</div>
+      ${hw.length===0 ? '<div class="empty">لا يوجد واجبات مضافة بعد.</div>' :
+      hw.map(h=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);"><div style="flex:1;"><div style="font-weight:700;">${esc(h.title)}</div><div class="muted">آخر موعد: ${h.due||'-'}</div></div><span class="muted">${DB.hwSubs.filter(s=>s.hwId===h.id).length} تسليم</span>
+        <span class="link-btn" onclick="__go('teacherCourse',{courseId:'${course.id}',tab:'homework',hwResults:'${h.id}'})">التسليمات</span>
+        <span class="link-btn" onclick="__editHomework('${h.id}')">تعديل</span>
+        <span class="link-btn" style="color:var(--coral);" onclick="__deleteHomework('${h.id}')">حذف</span></div>`).join('')}
+    </div>`;
+  }
+  window.__addHomework = async function(courseId){
+    const title = document.getElementById('hwTitle').value.trim();
+    const desc = document.getElementById('hwDesc').value.trim();
+    const due = document.getElementById('hwDue').value;
+    if(!title){ alert('اكتب عنوان الواجب'); return; }
+    DB.homework.push({id:uid(), courseId, title, desc, due});
+    await saveShared(KEYS.homework, DB.homework); render();
+  };
+  window.__editHomework = function(id){
+    const h = DB.homework.find(x=>x.id===id); if(!h) return;
+    editModal('تعديل الواجب', [{id:'title',label:'العنوان',value:h.title},{id:'desc',label:'الوصف',value:h.desc||''},{id:'due',label:'آخر موعد',type:'date',value:h.due||''}], async v=>{
+      if(!v.title){ alert('اكتب العنوان'); return; }
+      h.title = v.title; h.desc = v.desc; h.due = v.due;
+      await saveShared(KEYS.homework, DB.homework); render();
+    });
+  };
+  window.__deleteHomework = async function(id){
+    if(!(await askConfirm('حذف هذا الواجب وتسليماته؟'))) return;
+    DB.homework = DB.homework.filter(h=>h.id!==id);
+    DB.hwSubs = DB.hwSubs.filter(s=>s.hwId!==id);
+    await saveShared(KEYS.homework, DB.homework); await saveShared(KEYS.hwSubs, DB.hwSubs); render();
+  };
+  window.__gradeHw = async function(hwId, studentId){
+    const val = document.getElementById('hwgrade_'+studentId+'_'+hwId).value;
+    const sub = DB.hwSubs.find(s=>s.hwId===hwId && s.studentId===studentId);
+    if(sub){ sub.grade = val; await saveShared(KEYS.hwSubs, DB.hwSubs); render(); }
+  };
+
+  function renderTeacherCertificates(course){
+    const students = DB.students.filter(s => DB.enrollments.some(e=>e.courseId===course.id && e.studentId===s.id));
+    return `<div class="card"><div class="card-title">إصدار شهادات إتمام</div>
+      ${students.length===0 ? '<div class="empty">لا يوجد طلاب مسجلين في هذا الكورس.</div>' :
+      students.map(s=>{
+        const cert = DB.certificates.find(c=>c.studentId===s.id && c.courseId===course.id);
+        return `<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);"><div style="flex:1;">${esc(s.name)}</div>${cert ? `<span class="pill pill-teal">تم الإصدار</span>` : `<button class="btn btn-sm btn-gold" onclick="__issueCert('${course.id}','${s.id}')">إصدار شهادة</button>`}</div>`;
+      }).join('')}
+    </div>`;
+  }
+  window.__issueCert = async function(courseId, studentId){
+    const course = DB.courses.find(c=>c.id===courseId), student = DB.students.find(s=>s.id===studentId);
+    if(DB.certificates.find(c=>c.studentId===studentId && c.courseId===courseId)) return;
+    DB.certificates.push({id:uid(), studentId, studentName:student.name, courseId, courseName:course.name, issuedAt:Date.now()});
+    await saveShared(KEYS.certificates, DB.certificates); render();
+  };
+
+  // ---------- STUDENT ----------
+  function liveBannerFor(courses){
+    return courses.filter(c=>c.liveActive).map(c=>`<div class="banner banner-live">🔴 بث مباشر الآن في "${esc(c.name)}" <span class="link-btn" style="margin-right:auto;color:var(--coral);" onclick="__go('studentCourses',{courseId:'${c.id}'})">انضم الآن</span></div>`).join('');
+  }
+  function reminderBannerFor(studentId, courses){
+    const now = Date.now(), soon = now + 3*24*3600*1000;
+    return DB.homework.filter(h=>{
+      if(!courses.some(c=>c.id===h.courseId) || !h.due) return false;
+      const t = new Date(h.due).getTime();
+      return !DB.hwSubs.find(s=>s.hwId===h.id && s.studentId===studentId) && t>=now-24*3600*1000 && t<=soon;
+    }).map(h=>`<div class="banner banner-reminder">⏰ عندك واجب "${esc(h.title)}" قرب ميعاد تسليمه (${h.due})</div>`).join('');
+  }
+  function renderStudentDash(){
+    const courses = myCoursesOf(ME.id);
+    const grades = DB.grades.filter(g=>g.studentId===ME.id);
+    const avg = grades.length ? Math.round(grades.reduce((a,g)=>a+(g.score/g.max*100),0)/grades.length) : null;
+    const points = calcPoints(ME.id), badge = badgeFor(points);
+    return pageHeader('لوحة الطالب','أهلاً '+esc(ME.name)) + liveBannerFor(courses) + reminderBannerFor(ME.id, courses) + `
+      <div class="grid grid-3">
+        <div class="stat-card"><div class="stat-num">${courses.length}</div><div class="stat-label">كورساتي</div></div>
+        <div class="stat-card"><div class="stat-num">${avg!==null?avg+'%':'—'}</div><div class="stat-label">متوسط الدرجات</div></div>
+        <div class="stat-card"><div class="stat-num">${points} <span class="pill ${badge.cls}">${badge.label}</span></div><div class="stat-label">نقاطي</div></div>
+      </div>
+      <div class="card" style="margin-top:16px;"><div class="card-title">كود حسابك (شاركه مع ولي أمرك)</div><div class="pill pill-slate" style="font-size:14px;">${esc(ME.code||'')}</div></div>
+      <div class="card"><div class="card-title">كورساتي</div>
+        ${courses.length===0 ? '<div class="empty">لم يتم تسجيلك في أي كورس بعد. راجع إدارة السنتر.</div>' :
+        courses.map(c=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);"><div class="course-strip"></div><div style="flex:1;font-weight:700;">${esc(c.name)}</div><span class="muted">المدرس: ${esc(c.teacherName)}</span></div>`).join('')}
+      </div>`;
+  }
+  function toEmbedUrl(url){
+    try{
+      const u = new URL(url);
+      if(u.hostname.includes('youtu.be')) return 'https://www.youtube.com/embed/'+u.pathname.slice(1);
+      if(u.hostname.includes('youtube.com')){
+        if(u.pathname.includes('/embed/')) return url;
+        const id = u.searchParams.get('v'); if(id) return 'https://www.youtube.com/embed/'+id;
+      }
+      if(u.hostname.includes('vimeo.com')) return 'https://player.vimeo.com/video/'+u.pathname.split('/').filter(Boolean).pop();
+      return url;
+    }catch(e){ return url; }
+  }
+  function renderStudentCourses(){
+    const courses = myCoursesOf(ME.id);
+    if(ctx.courseId){
+      const course = courses.find(c=>c.id===ctx.courseId);
+      if(!course) return pageHeader('الكورس غير متاح','');
+      const wm = ME.code || ME.name;
+      return pageHeader(esc(course.name), esc(course.desc||'')) +
+        (course.liveActive ? `<div class="card"><div class="card-title">🔴 بث مباشر الآن</div><div class="video-protect" style="background:#111;" oncontextmenu="return false;"><iframe src="${esc(course.liveUrl)}" allow="camera; microphone; fullscreen" style="width:100%;height:400px;border:none;display:block;"></iframe></div></div>` : '') + `
+        <div class="card"><div class="card-title">المحتوى التعليمي</div>
+        <div class="muted" style="margin-bottom:10px;">🔒 كل فيديو عليه علامة مائية بكودك كإجراء ردع من التسجيل والمشاركة (ردع وليس منعاً كاملاً).</div>
+        ${(course.materials||[]).length===0 ? '<div class="empty">لا يوجد محتوى مضاف بعد.</div>' :
+        course.materials.map(m=>`<div style="margin-bottom:16px;"><div style="font-weight:700;margin-bottom:6px;">${esc(m.title)}</div>
+          <div class="video-protect" oncontextmenu="return false;"><iframe src="${esc(toEmbedUrl(m.url))}" style="width:100%;height:220px;border:none;display:block;" allowfullscreen></iframe>
+          <div class="watermark-overlay">${Array.from({length:9}).map(()=>`<span style="margin:10px;">${esc(wm)}</span>`).join('')}</div></div>
+          <a href="${esc(m.url)}" target="_blank" class="link-btn">فتح الرابط الأصلي</a></div>`).join('')}
+        </div><button class="btn btn-outline" onclick="__go('studentCourses')">رجوع لكل الكورسات</button>`;
+    }
+    return pageHeader('كورساتي','') + liveBannerFor(courses) + (courses.length===0 ? '<div class="empty">لم يتم تسجيلك في أي كورس بعد.</div>' :
+      `<div class="grid grid-2">${courses.map(c=>`<div class="card" style="cursor:pointer;" onclick="__go('studentCourses',{courseId:'${c.id}'})"><div class="card-title">${esc(c.name)} ${c.liveActive?'<span class="pill pill-coral">🔴 مباشر</span>':''}</div><div class="muted">مدرس الكورس: ${esc(c.teacherName)}</div></div>`).join('')}</div>`);
+  }
+  function renderStudentAttendance(){
+    const courses = myCoursesOf(ME.id), rows = [];
+    DB.attendance.filter(a=>courses.some(c=>c.id===a.courseId)).forEach(a=>{
+      const rec = a.records.find(r=>r.studentId===ME.id);
+      if(rec){ const c = courses.find(x=>x.id===a.courseId); rows.push({date:a.date, course:c.name, status:rec.status}); }
+    });
+    rows.sort((a,b)=>b.date.localeCompare(a.date));
+    return pageHeader('سجل الحضور والغياب','') + `<div class="card">${rows.length===0 ? '<div class="empty">لا يوجد سجل حضور بعد.</div>' :
+      `<table><tr><th>التاريخ</th><th>الكورس</th><th>الحالة</th></tr>${rows.map(r=>`<tr><td>${r.date}</td><td>${esc(r.course)}</td><td><span class="pill ${r.status==='present'?'pill-teal':'pill-coral'}">${r.status==='present'?'حاضر':'غائب'}</span></td></tr>`).join('')}</table>`}</div>`;
+  }
+  function renderStudentGrades(){
+    const courses = myCoursesOf(ME.id), grades = DB.grades.filter(g=>g.studentId===ME.id);
+    return pageHeader('درجاتي','') + `<div class="card">${grades.length===0 ? '<div class="empty">لا يوجد درجات مسجلة بعد.</div>' :
+      `<table><tr><th>الكورس</th><th>التقييم</th><th>الدرجة</th></tr>${grades.map(g=>{const c=courses.find(x=>x.id===g.courseId); const pct=Math.round(g.score/g.max*100); return `<tr><td>${esc(c?c.name:'؟')}</td><td>${esc(g.title)}</td><td><span class="pill ${pct>=50?'pill-teal':'pill-coral'}">${g.score}/${g.max}</span></td></tr>`;}).join('')}</table>`}</div>`;
+  }
+  function examState(e){
+    const now = Date.now();
+    const o = e.opensAt ? new Date(e.opensAt).getTime() : 0;
+    const c = e.closesAt ? new Date(e.closesAt).getTime() : Infinity;
+    return now < o ? 'soon' : now > c ? 'closed' : 'open';
+  }
+  function examStartKey(examId){ return 'dr_exam_start_'+examId+'_'+(ME?ME.id:''); }
+  function examDeadline(e){
+    let start = Date.now();
+    try{ const v = localStorage.getItem(examStartKey(e.id)); if(v) start = Number(v); }catch(err){}
+    const byDur = e.durationMin ? start + e.durationMin*60000 : Infinity;
+    const byClose = e.closesAt ? new Date(e.closesAt).getTime() : Infinity;
+    return Math.min(byDur, byClose);
+  }
+  function startExamTimer(){
+    const e = DB.exams.find(x=>x.id===ctx.takeExam); const el = document.getElementById('examTimer');
+    if(!e || !el) return;
+    const deadline = examDeadline(e);
+    if(deadline === Infinity){ el.style.display = 'none'; return; }
+    const tick = ()=>{
+      const left = Math.max(0, Math.round((deadline - Date.now())/1000));
+      const m = String(Math.floor(left/60)).padStart(2,'0'), sec = String(left%60).padStart(2,'0');
+      const node = document.getElementById('examTimer'); if(node) node.textContent = '⏱ الوقت المتبقي: ' + m + ':' + sec;
+      if(left <= 0){ clearInterval(window.__examInt); window.__examInt = null; alert('انتهى الوقت وتم تسليم الامتحان'); window.__submitExam(e.id, e.questions.length); }
+    };
+    tick(); window.__examInt = setInterval(tick, 1000);
+  }
+  function renderStudentExams(){
+    const courses = myCoursesOf(ME.id);
+    const exams = DB.exams.filter(e=>courses.some(c=>c.id===e.courseId));
+    if(ctx.takeExam){
+      const exam = exams.find(e=>e.id===ctx.takeExam);
+      if(!exam) return pageHeader('الامتحان غير متاح','') + `<button class="btn btn-outline" onclick="__go('studentExams')">رجوع</button>`;
+      const already = DB.submissions.find(s=>s.examId===exam.id && s.studentId===ME.id);
+      if(already) return pageHeader(esc(exam.title),'') + `<div class="card"><div class="card-title">لقد قدمت هذا الامتحان بالفعل</div><div class="seal" style="margin-bottom:10px;">${already.score}/${exam.questions.length}</div><div class="muted">درجتك: ${already.score} من ${exam.questions.length}</div></div><button class="btn btn-outline" style="margin-top:10px;" onclick="__go('studentExams')">رجوع</button>`;
+      const st = examState(exam);
+      if(st !== 'open') return pageHeader(esc(exam.title),'') + `<div class="card"><div class="empty">${st==='soon' ? 'الامتحان لسه ما بدأش. يفتح في '+fmtDT(exam.opensAt) : 'انتهى وقت هذا الامتحان.'}</div></div><button class="btn btn-outline" onclick="__go('studentExams')">رجوع</button>`;
+      try{ if(!localStorage.getItem(examStartKey(exam.id))) localStorage.setItem(examStartKey(exam.id), String(Date.now())); }catch(err){}
+      return pageHeader(esc(exam.title),'أجب على كل الأسئلة ثم اضغط تسليم') + `<div class="banner banner-reminder" id="examTimer"></div><div class="card">
+        ${exam.questions.map((q,i)=>`<div class="qbox"><div style="font-weight:700;margin-bottom:8px;">${i+1}. ${esc(q.text)}</div>${q.options.map((o,oi)=>`<label style="display:flex;align-items:center;gap:8px;font-weight:400;color:var(--ink);margin-bottom:6px;"><input type="radio" name="ans_${i}" value="${oi}" style="width:auto;" /> ${esc(o)}</label>`).join('')}</div>`).join('')}
+        <button class="btn btn-gold" onclick="__submitExam('${exam.id}', ${exam.questions.length})">تسليم الامتحان</button></div>`;
+    }
+    return pageHeader('الامتحانات المتاحة','') + `<div class="card">${exams.length===0 ? '<div class="empty">لا يوجد امتحانات متاحة حالياً.</div>' :
+      exams.map(e=>{
+        const done = DB.submissions.find(s=>s.examId===e.id && s.studentId===ME.id);
+        const c = courses.find(x=>x.id===e.courseId);
+        const st = examState(e);
+        const action = done ? `<span class="pill pill-teal">تم: ${done.score}/${e.questions.length}</span>` :
+          st==='soon' ? `<span class="pill pill-gold">يفتح ${fmtDT(e.opensAt)}</span>` :
+          st==='closed' ? `<span class="pill pill-coral">انتهى</span>` :
+          `<button class="btn btn-sm btn-gold" onclick="__go('studentExams',{takeExam:'${e.id}'})">ابدأ الامتحان</button>`;
+        return `<div class="row" style="padding:9px 0;border-bottom:1px solid var(--line);"><div style="flex:1;"><div style="font-weight:700;">${esc(e.title)}</div><div class="muted">${esc(c?c.name:'')} · ${e.questions.length} سؤال ${e.durationMin?'· '+e.durationMin+' دقيقة':''} ${e.scheduledDate?'· '+e.scheduledDate:''}</div></div>${action}</div>`;
+      }).join('')}</div>`;
+  }
+  window.__submitExam = async function(examId, qCount){
+    const exam = DB.exams.find(e=>e.id===examId); if(!exam) return;
+    if(DB.submissions.find(s=>s.examId===examId && s.studentId===ME.id)) return;
+    const closes = exam.closesAt ? new Date(exam.closesAt).getTime() : Infinity;
+    if(Date.now() > closes + 20000){ alert('انتهى وقت الامتحان'); ctx = {}; render(); return; }
+    let score = 0; const answers = [];
+    for(let i=0;i<qCount;i++){
+      const sel = document.querySelector('input[name="ans_'+i+'"]:checked');
+      const val = sel ? Number(sel.value) : -1; answers.push(val);
+      if(val === exam.questions[i].correct) score++;
+    }
+    DB.submissions.push({examId, studentId:ME.id, answers, score, submittedAt:Date.now()});
+    await saveShared(KEYS.submissions, DB.submissions);
+    ctx = {takeExam:examId}; render();
+  };
+  function renderStudentHomework(){
+    const courses = myCoursesOf(ME.id);
+    const hw = DB.homework.filter(h=>courses.some(c=>c.id===h.courseId));
+    return pageHeader('الواجبات','') + `<div class="card">${hw.length===0 ? '<div class="empty">لا يوجد واجبات متاحة حالياً.</div>' :
+      hw.map(h=>{
+        const c = courses.find(x=>x.id===h.courseId);
+        const sub = DB.hwSubs.find(s=>s.hwId===h.id && s.studentId===ME.id);
+        return `<div class="qbox"><div style="font-weight:700;">${esc(h.title)}</div><div class="muted" style="margin:4px 0;">${esc(c?c.name:'')} ${h.due?'· آخر موعد: '+h.due:''}</div><div class="muted" style="margin-bottom:8px;">${esc(h.desc||'')}</div>
+        ${sub ? `<div class="pill ${sub.grade?'pill-teal':'pill-gold'}">${sub.grade? 'التقييم: '+esc(sub.grade) : 'تم التسليم - بانتظار التقييم'}</div>` : `<textarea id="hwAns_${h.id}" rows="2" placeholder="اكتب إجابتك أو رابط الحل"></textarea><button class="btn btn-sm btn-gold" style="margin-top:6px;" onclick="__submitHw('${h.id}')">تسليم الواجب</button>`}</div>`;
+      }).join('')}</div>`;
+  }
+  window.__submitHw = async function(hwId){
+    const content = document.getElementById('hwAns_'+hwId).value.trim();
+    if(!content){ alert('اكتب إجابتك قبل التسليم'); return; }
+    DB.hwSubs.push({hwId, studentId:ME.id, content, grade:null, submittedAt:Date.now()});
+    await saveShared(KEYS.hwSubs, DB.hwSubs); render();
+  };
+  function renderStudentCertificates(){
+    const certs = DB.certificates.filter(c=>c.studentId===ME.id);
+    if(ctx.certId){
+      const cert = certs.find(c=>c.id===ctx.certId);
+      if(!cert) return pageHeader('الشهادة غير موجودة','');
+      return `<div class="no-print" style="margin-bottom:14px;"><span class="link-btn" onclick="__go('studentCertificates')">رجوع</span></div>
+        <div class="cert-page"><div class="cert-seal">DA</div>
+          <div style="font-size:12px;letter-spacing:2px;color:var(--slate);margin-bottom:8px;">Dr Academy</div>
+          <h1 style="font-size:24px;font-weight:900;margin-bottom:18px;">شهادة إتمام</h1>
+          <div style="font-size:14px;color:var(--slate);margin-bottom:6px;">تشهد منصة Dr Academy بأن الطالب</div>
+          <div style="font-size:22px;font-weight:900;color:var(--gold);margin-bottom:10px;">${esc(cert.studentName)}</div>
+          <div style="font-size:14px;color:var(--slate);margin-bottom:6px;">قد أتم بنجاح كورس</div>
+          <div style="font-size:18px;font-weight:800;margin-bottom:16px;">${esc(cert.courseName)}</div>
+          <div class="muted">بتاريخ ${new Date(cert.issuedAt).toLocaleDateString('ar-EG')}</div></div>
+        <div class="no-print" style="text-align:center;margin-top:20px;"><button class="btn btn-gold" onclick="window.print()">🖨️ طباعة / حفظ PDF</button></div>`;
+    }
+    return pageHeader('شهاداتي','') + `<div class="card">${certs.length===0 ? '<div class="empty">لسه معندكش شهادات. هتظهر هنا أول ما المدرس يصدرها.</div>' :
+      certs.map(c=>`<div class="row" style="padding:9px 0;border-bottom:1px solid var(--line);"><div style="flex:1;"><div style="font-weight:700;">${esc(c.courseName)}</div><div class="muted">${new Date(c.issuedAt).toLocaleDateString('ar-EG')}</div></div><button class="btn btn-sm btn-gold" onclick="__go('studentCertificates',{certId:'${c.id}'})">عرض وطباعة</button></div>`).join('')}</div>`;
+  }
+
+  // ---------- ROUTER ----------
+  function render(){
+    if(window.__examInt){ clearInterval(window.__examInt); window.__examInt = null; }
+    if(loading){ document.getElementById('app').innerHTML = '<div style="padding:60px;text-align:center;color:#6B7280;">جاري التحميل...</div>'; return; }
+    if(route==='parentReport'){ renderParentReport(); return; }
+    if(!ME){ renderLogin(); if(false){ const c=document.querySelector('.login-card'); if(c) c.insertAdjacentHTML('afterbegin','<div class="banner banner-live">⚠️ التخزين المشترك غير متاح. افتح الرابط وانت مسجل دخول في Claude.</div>'); } return; }
+    let inner = '';
+    if(ME.role==='admin'){
+      inner = route==='manageTeachers' ? renderManageTeachers() : route==='manageStudents' ? renderManageStudents() : route==='manageCourses' ? renderManageCourses() : route==='adminEnroll' ? renderAdminEnroll() : renderAdminDash();
+    } else if(ME.role==='teacher'){
+      inner = route==='myCourses' ? renderMyCourses() : route==='teacherCourse' ? renderTeacherCourse() : route==='calendar' ? renderCalendar() : renderTeacherDash();
+    } else {
+      inner = route==='studentCourses' ? renderStudentCourses() : route==='studentAttendance' ? renderStudentAttendance() : route==='studentGrades' ? renderStudentGrades() : route==='studentExams' ? renderStudentExams() : route==='studentHomework' ? renderStudentHomework() : route==='studentCertificates' ? renderStudentCertificates() : route==='calendar' ? renderCalendar() : renderStudentDash();
+    }
+    renderShell(inner);
+    if(ME.role==='student' && route==='studentExams' && ctx.takeExam) startExamTimer();
+  }
+
+  boot();
+})();
+</script>
+
+<style>
+  html,body{margin:0;background:#F7F4EC;}
+  :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;}
+  @media(max-width:760px){
+    .shell{flex-direction:column;}
+    .sidebar{width:100%;flex-direction:row;flex-wrap:wrap;gap:4px;padding:12px;}
+    .sidebar .brand,.sidebar .role-tag{width:100%;margin-bottom:4px;}
+    .nav-spacer{display:none;}
+    .nav-item{padding:7px 10px;}
+    .main{padding:18px 14px;max-height:none;}
+    .grid-3,.grid-2{grid-template-columns:1fr;}
+    .login-card{width:100%;}
+  }
+</style>
+</body></html>
